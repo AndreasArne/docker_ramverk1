@@ -30,7 +30,12 @@ RUN	wget http://xdebug.org/files/xdebug-2.5.4.tgz && \
 RUN	apt-get install -qy git zip unzip php-pclzip
 
 # Enable gd, for cimage. Kopierat från https://github.com/cimage/docker/blob/master/php71/Dockerfile
-RUN 	docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
+RUN 	apt-get install -qy \
+        libfreetype6-dev \
+        libjpeg62-turbo-dev \
+        libmcrypt-dev \
+        libpng12-dev \
+	&& docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
 	&& docker-php-ext-install -j$(nproc) gd
 
 # allow rewrite, htaccess
