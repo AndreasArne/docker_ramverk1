@@ -29,6 +29,9 @@ RUN	wget http://xdebug.org/files/xdebug-2.5.4.tgz && \
 # install git and zip for composer
 RUN	apt-get install -qy git zip unzip php-pclzip
 
+# allow rewrite, htaccess
+RUN	a2enmod rewrite && service apache2 restart
+
 EXPOSE 80
 
 VOLUME ["/var/www/html"]
