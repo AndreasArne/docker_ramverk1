@@ -26,11 +26,11 @@ RUN	wget http://xdebug.org/files/xdebug-2.5.4.tgz && \
 	echo "zend_extension = /usr/local/lib/php/extensions/no-debug-non-zts-20160303/xdebug.so" > /usr/local/etc/php/php.ini && \
 	rm -rf xdebu*
 
-# install git and zip for composer
-RUN	apt-get install -qy git zip unzip php-pclzip
+# install git and zip for composer PDO
+RUN	apt-get -qq update && apt-get install -qy git zip unzip php-pclzip
 
 # Enable gd, for cimage. Kopierat från https://github.com/cimage/docker/blob/master/php71/Dockerfile
-RUN 	apt-get install -qy \
+RUN 	apt-get -qq update && apt-get install -qy \
         libfreetype6-dev \
         libjpeg62-turbo-dev \
         libmcrypt-dev \
@@ -40,6 +40,11 @@ RUN 	apt-get install -qy \
 
 # allow rewrite, htaccess
 RUN	a2enmod rewrite && service apache2 restart
+
+# install pdo_mysql
+RUN     apt-get -qq update\
+        && docker-php-ext-install mysqli \
+        && docker-php-ext-install pdo_mysql
 
 EXPOSE 80
 
